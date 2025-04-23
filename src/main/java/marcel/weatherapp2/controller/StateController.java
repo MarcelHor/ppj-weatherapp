@@ -29,7 +29,8 @@ public class StateController {
     }
 
     @PutMapping("/{id}")
-    public StateDto update(@RequestBody StateDto dto) {
+    public StateDto update(@RequestParam Long id, @RequestBody StateDto dto) {
+        dto.setId(id);
         return service.update(dto);
     }
 

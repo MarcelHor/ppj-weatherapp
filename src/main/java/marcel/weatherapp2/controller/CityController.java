@@ -28,7 +28,8 @@ public class CityController {
     }
 
     @PutMapping("/{id}")
-    public CityDto update(@RequestBody CityDto dto) {
+    public CityDto update(@RequestParam Long id, @RequestBody CityDto dto) {
+        dto.setId(id);
         return service.update(dto);
     }
 
