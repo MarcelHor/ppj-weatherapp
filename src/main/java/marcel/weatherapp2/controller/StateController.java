@@ -9,20 +9,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/states")
+@RequestMapping("/api/state")
 @RequiredArgsConstructor
 public class StateController {
 
     private final StateService service;
 
     @GetMapping
-    public List<StateDto> getAll() {
+    public List<StateDto> getState(@RequestParam(required = false) Long id) {
+        if (id != null) {
+            return List.of(service.findById(id));
+        }
         return service.findAll();
-    }
-
-    @GetMapping("/{id}")
-    public StateDto getById(@PathVariable Long id) {
-        return service.findById(id);
     }
 
     @PostMapping
@@ -31,10 +29,8 @@ public class StateController {
     }
 
     @PutMapping("/{id}")
-    public StateDto update(@PathVariable Long id, @RequestBody StateDto dto) {
-        dto.setId(id);
-        service.update(dto);
-        return dto;
+    public StateDto update(@RequestBody StateDto dto) {
+        return service.update(dto);
     }
 
     @DeleteMapping("/{id}")

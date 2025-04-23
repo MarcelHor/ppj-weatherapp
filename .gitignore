@@ -32,3 +32,22 @@ build/
 ### VS Code ###
 .vscode/
 .env
+log.out
+
+# OS-specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Java
+*.log
+*.class
+*.jar
+*.war
+*.ear
+
+# Spring/Maven
+hs_err_pid*
+.mvn/timing.properties
+dependency-reduced-pom.xml
+release.properties

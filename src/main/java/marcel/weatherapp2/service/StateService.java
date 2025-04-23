@@ -19,7 +19,6 @@ public class StateService {
         return repository.findAll().stream()
                 .map(state -> new StateDto(state.getId(), state.getName()))
                 .toList();
-
     }
 
     public StateDto findById(Long id) {
@@ -37,8 +36,9 @@ public class StateService {
         repository.deleteById(id);
     }
 
-    public void update(StateDto dto) {
+    public StateDto update(StateDto dto) {
         State state = new State(dto.getId(), dto.getName());
-        repository.update(state);
+        State updatedState = repository.update(state);
+        return new StateDto(updatedState.getId(), updatedState.getName());
     }
 }
