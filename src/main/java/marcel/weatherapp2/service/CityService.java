@@ -1,10 +1,7 @@
 package marcel.weatherapp2.service;
 
 import lombok.RequiredArgsConstructor;
-import marcel.weatherapp2.dto.CityDto;
-import marcel.weatherapp2.dto.StateDto;
 import marcel.weatherapp2.dto.CityCreateDto;
-import marcel.weatherapp2.dto.StateCreateDto;
 import marcel.weatherapp2.model.City;
 import marcel.weatherapp2.model.State;
 import marcel.weatherapp2.repository.CityRepository;
@@ -20,32 +17,31 @@ public class CityService {
     private final StateRepository stateRepository;
 
 
-    public List<CityDto> findAll() {
-        return repository.findAll().stream()
-                .map(city -> new CityDto(city.getId(), city.getName(), city.getState().getId(), city.getState().getName()))
-                .toList();
+    public List<City> findAll() {
+        return repository.findAll();
     }
 
-    public CityDto findById(Long id) {
-        City city = repository.findById(id).orElseThrow(() -> new RuntimeException("City not found"));
-        return new CityDto(city.getId(), city.getName(), city.getState().getId(), city.getState().getName());
+    public City findById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("City not found"));
     }
 
-    public CityDto save(CityCreateDto dto) {
-        State state = stateRepository.findById(dto.getStateId());
-        City city = new City(null, dto.getName(), new State(state.getId(), state.getName()));
-        City savedCity = repository.save(city);
-        return new CityDto(savedCity.getId(), savedCity.getName(), savedCity.getState().getId(), savedCity.getState().getName());
+    public City save(CityCreateDto dto) {
+        State state = stateRepository.findById(dto.stateId()).orElseThrow(() -> new IllegalArgumentException("State not found"));
+        return repository.save(new City(dto.name(), state));
+    }
+
+    public City update(Long id, CityCreateDto dto) {
+        City city = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("City not found"));
+        State state = stateRepository.findById(dto.stateId()).orElseThrow(() -> new IllegalArgumentException("State not found"));
+        city.setName(dto.name());
+        city.setState(state);
+        return repository.save(city);
     }
 
     public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new IllegalArgumentException("City not found");
+        }
         repository.deleteById(id);
-    }
-
-    public CityDto update(CityDto dto) {
-        State state = stateRepository.findById(dto.getStateId());
-        City city = new City(dto.getId(), dto.getName(), state);
-        City updatedCity = repository.save(city);
-        return new CityDto(updatedCity.getId(), updatedCity.getName(), updatedCity.getState().getId(), updatedCity.getState().getName());
     }
 }

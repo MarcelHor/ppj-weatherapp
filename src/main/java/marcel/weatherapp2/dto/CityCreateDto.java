@@ -1,13 +1,7 @@
 package marcel.weatherapp2.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class CityCreateDto {
-    private String name;
-    private Long stateId;
+public record CityCreateDto(@NotBlank String name, @NotNull Long stateId) {
 }

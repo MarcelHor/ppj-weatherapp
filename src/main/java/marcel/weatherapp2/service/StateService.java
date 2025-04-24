@@ -2,8 +2,8 @@ package marcel.weatherapp2.service;
 
 import lombok.RequiredArgsConstructor;
 import marcel.weatherapp2.dto.StateCreateDto;
-import marcel.weatherapp2.dto.StateDto;
 import marcel.weatherapp2.model.State;
+import marcel.weatherapp2.repository.CityRepository;
 import marcel.weatherapp2.repository.StateRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,31 +14,35 @@ import java.util.List;
 public class StateService {
 
     private final StateRepository repository;
+    private final CityRepository cityRepository;
 
-    public List<StateDto> findAll() {
-        return repository.findAll().stream()
-                .map(state -> new StateDto(state.getId(), state.getName()))
-                .toList();
+    public List<State> findAll() {
+        return repository.findAll();
     }
 
-    public StateDto findById(Long id) {
-        State state = repository.findById(id);
-        return new StateDto(state.getId(), state.getName());
+    public State findById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new IllegalArgumentException("State not found"));
     }
 
-    public StateDto save(StateCreateDto dto) {
-        State state = new State(null, dto.getName());
-        State savedState = repository.save(state);
-        return new StateDto(savedState.getId(), savedState.getName());
+    public State save(StateCreateDto dto) {
+        return repository.save(new State(dto.name()));
+    }
+
+    public State update(Long id, StateCreateDto dto) {
+        State state = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("State not found"));
+        state.setName(dto.name());
+        return repository.save(state);
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
-    }
+        if (!repository.existsById(id)) {
+            throw new IllegalArgumentException("State not found");
+        }
 
-    public StateDto update(StateDto dto) {
-        State state = new State(dto.getId(), dto.getName());
-        State updatedState = repository.update(state);
-        return new StateDto(updatedState.getId(), updatedState.getName());
+        if(cityRepository.existsByStateId(id)) {
+            throw new IllegalArgumentException("State cannot be deleted because it has associated cities");
+        }
+
+        repository.deleteById(id);
     }
 }

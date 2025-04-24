@@ -1,5 +1,6 @@
 package marcel.weatherapp2.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import marcel.weatherapp2.dto.StateCreateDto;
 import marcel.weatherapp2.dto.StateDto;
@@ -16,22 +17,25 @@ public class StateController {
     private final StateService service;
 
     @GetMapping
-    public List<StateDto> getState(@RequestParam(required = false) Long id) {
-        if (id != null) {
-            return List.of(service.findById(id));
-        }
-        return service.findAll();
+    public StateDto getState(@RequestParam Long id) {
+        return new StateDto(service.findById(id));
+    }
+
+    @GetMapping("/all")
+    public List<StateDto> getStates() {
+        return service.findAll().stream()
+                .map(StateDto::new)
+                .toList();
     }
 
     @PostMapping
-    public StateDto create(@RequestBody StateCreateDto dto) {
-        return service.save(dto);
+    public StateDto createState(@Valid @RequestBody StateCreateDto dto) {
+        return new StateDto(service.save(dto));
     }
 
     @PutMapping("/{id}")
-    public StateDto update(@RequestParam Long id, @RequestBody StateDto dto) {
-        dto.setId(id);
-        return service.update(dto);
+    public StateDto updateState(@PathVariable Long id, @Valid @RequestBody StateCreateDto dto) {
+        return new StateDto(service.update(id, dto));
     }
 
     @DeleteMapping("/{id}")

@@ -1,15 +1,8 @@
 package marcel.weatherapp2.dto;
+import marcel.weatherapp2.model.City;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class CityDto {
-    private Long id;
-    private String name;
-    private Long stateId;
-    private String stateName;
+public record CityDto(Long id, String name, Long stateId, String stateName) {
+    public CityDto(City city) {
+        this(city.getId(), city.getName(), city.getState().getId(), city.getState().getName());
+    }
 }

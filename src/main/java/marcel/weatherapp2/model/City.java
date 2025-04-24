@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class City {
 
     @Id
@@ -17,6 +16,11 @@ public class City {
 
     private String name;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private State state;
+
+    public City(String name, State state) {
+        this.name = name;
+        this.state = state;
+    }
 }

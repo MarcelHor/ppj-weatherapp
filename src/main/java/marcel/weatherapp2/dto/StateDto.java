@@ -1,13 +1,9 @@
 package marcel.weatherapp2.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import marcel.weatherapp2.model.State;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class StateDto {
-    private Long id;
-    private String name;
+public record StateDto(Long id, String name) {
+    public StateDto(State state) {
+        this(state.getId(), state.getName());
+    }
 }
