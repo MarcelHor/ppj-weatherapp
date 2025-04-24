@@ -1,16 +1,13 @@
 package marcel.weatherapp2.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
-
 @Entity
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 public class Measurement {
 
     @Id
@@ -23,6 +20,13 @@ public class Measurement {
 
     @ManyToOne
     private City city;
+
+    public Measurement(double temperature, double humidity, LocalDateTime timestamp, City city) {
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.timestamp = timestamp;
+        this.city = city;
+    }
 }
 
 
