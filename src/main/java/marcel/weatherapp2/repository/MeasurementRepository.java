@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface MeasurementRepository extends JpaRepository<Measurement, Long> {
     List<Measurement> findByCityIdAndTimestampBetween(Long cityId, LocalDateTime from, LocalDateTime to);
+    List<Measurement> findByCityIdAndTimestampAfter(Long cityId, LocalDateTime timestamp);
+    boolean existsByCityId(Long cityId);
 }

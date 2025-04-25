@@ -35,10 +35,21 @@ public class MeasurementController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<MeasurementDto> getAll() {
         return service.getAllMeasurements().stream()
                 .map(MeasurementDto::new)
                 .collect(Collectors.toList());
+    }
+
+    @PutMapping("/{id}")
+    public MeasurementDto updateMeasurement(@PathVariable Long id, @RequestBody MeasurementDto dto) {
+        Measurement measurement = service.updateMeasurement(id, dto);
+        return new MeasurementDto(measurement);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteMeasurement(@PathVariable Long id) {
+        service.deleteMeasurement(id);
     }
 }

@@ -2,6 +2,7 @@ package marcel.weatherapp2.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import marcel.weatherapp2.dto.MeasurementDto;
 import marcel.weatherapp2.model.City;
 import marcel.weatherapp2.model.Measurement;
 import marcel.weatherapp2.repository.CityRepository;
@@ -23,7 +24,7 @@ public class MeasurementService {
     private final CityRepository cityRepository;
     private final RestTemplate restTemplate;
 
-    @Value("${OPEN_WEATHER_API_KEY}")
+    @Value("${weather.api.key}")
     private String apiKey;
 
     public Measurement getMeasurement(Long cityId) {
@@ -50,5 +51,21 @@ public class MeasurementService {
 
     public List<Measurement> getAllMeasurements() {
         return repository.findAll();
+    }
+
+    public void deleteMeasurement(Long id) {
+        if (!repository.existsById(id)) {
+            throw new RuntimeException("Measurement not found");
+        }
+        repository.deleteById(id);
+    }
+
+    public Measurement updateMeasurement(Long id, MeasurementDto measurement) {
+        Measurement existingMeasurement = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Measurement not found"));
+        existingMeasurement.setTemperature(measurement.temperature());
+        existingMeasurement.setHumidity(measurement.humidity());
+        existingMeasurement.setTimestamp(measurement.timestamp());
+        return repository.save(existingMeasurement);
     }
 }
