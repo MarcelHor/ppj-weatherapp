@@ -41,6 +41,7 @@ desktop.ini
 
 # Java
 *.log
+*.out
 *.class
 *.jar
 *.war

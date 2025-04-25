@@ -16,16 +16,14 @@ public class StateController {
 
     private final StateService service;
 
-    @GetMapping
-    public StateDto getState(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public StateDto getState(@PathVariable Long id) {
         return new StateDto(service.findById(id));
     }
 
     @GetMapping("/all")
     public List<StateDto> getStates() {
-        return service.findAll().stream()
-                .map(StateDto::new)
-                .toList();
+        return service.findAll().stream().map(StateDto::new).toList();
     }
 
     @PostMapping

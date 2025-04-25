@@ -6,6 +6,7 @@ import marcel.weatherapp2.dto.CityCreateDto;
 import marcel.weatherapp2.dto.CityDto;
 import marcel.weatherapp2.service.CityService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -15,16 +16,14 @@ public class CityController {
 
     private final CityService service;
 
-    @GetMapping
-    public CityDto getCity(@RequestParam Long id) {
+    @GetMapping("/{id}")
+    public CityDto getCity(@PathVariable Long id) {
         return new CityDto(service.findById(id));
     }
 
     @GetMapping("/all")
     public List<CityDto> getCities() {
-        return service.findAll().stream()
-                .map(CityDto::new)
-                .toList();
+        return service.findAll().stream().map(CityDto::new).toList();
     }
 
     @PostMapping
