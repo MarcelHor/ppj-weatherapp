@@ -26,4 +26,9 @@ public class State {
     public State(String name) {
         this.name = name;
     }
+
+    public State(String name, Long id) {
+        this.name = name;
+        this.id = id;
+    }
 }
