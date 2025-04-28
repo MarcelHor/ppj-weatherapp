@@ -40,8 +40,7 @@ class MeasurementServiceTest {
 
     @Test
     void shouldFetchAndSaveMeasurement() {
-        City city = new City("Liberec", new State("Česko"));
-        city.setId(1L);
+        City city = new City(1L,"Liberec", new State("Česko"));
 
         when(cityRepository.findById(1L)).thenReturn(Optional.of(city));
 
@@ -103,8 +102,7 @@ class MeasurementServiceTest {
 
     @Test
     void shouldUpdateMeasurement() {
-        Measurement existing = new Measurement(15.0, 50.0, LocalDateTime.now(), null);
-        existing.setId(5L);
+        Measurement existing = new Measurement(5L,15.0, 50.0, LocalDateTime.now(), null);
 
         when(measurementRepository.findById(5L)).thenReturn(Optional.of(existing));
         when(measurementRepository.save(any(Measurement.class))).thenAnswer(inv -> inv.getArgument(0));

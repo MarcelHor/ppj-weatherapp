@@ -35,10 +35,8 @@ class CityControllerTest {
 
     @Test
     void shouldReturnCityById() throws Exception {
-        State state = new State("Česko");
-        state.setId(1L);
-        City city = new City("Liberec", state);
-        city.setId(10L);
+        State state = new State("Česko", 1L);
+        City city = new City(10L,"Liberec", state);
 
         when(cityService.findById(10L)).thenReturn(city);
 
@@ -52,10 +50,9 @@ class CityControllerTest {
 
     @Test
     void shouldReturnAllCities() throws Exception {
-        State state = new State("Česko");
-        state.setId(1L);
-        City c1 = new City("Liberec", state); c1.setId(10L);
-        City c2 = new City("Brno", state); c2.setId(11L);
+        State state = new State("Česko", 1L);
+        City c1 = new City(10L,"Liberec", state);
+        City c2 = new City(11L,"Brno", state);
 
         when(cityService.findAll()).thenReturn(List.of(c1, c2));
 
@@ -68,8 +65,8 @@ class CityControllerTest {
 
     @Test
     void shouldCreateCity() throws Exception {
-        State state = new State("Česko"); state.setId(1L);
-        City created = new City("Ostrava", state); created.setId(12L);
+        State state = new State("Česko", 1L);
+        City created = new City(12L,"Ostrava", state);
 
         when(cityService.save(any(CityCreateDto.class))).thenReturn(created);
 
@@ -84,8 +81,8 @@ class CityControllerTest {
 
     @Test
     void shouldUpdateCity() throws Exception {
-        State state = new State("Česko"); state.setId(1L);
-        City updated = new City("Plzeň", state); updated.setId(13L);
+        State state = new State("Česko", 1L);
+        City updated = new City(13L,"Plzeň", state);
 
         when(cityService.update(eq(13L), any(CityCreateDto.class))).thenReturn(updated);
 

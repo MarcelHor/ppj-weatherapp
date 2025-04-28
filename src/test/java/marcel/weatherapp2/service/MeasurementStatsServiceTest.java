@@ -38,8 +38,7 @@ class MeasurementStatsServiceTest {
 
     @Test
     void shouldReturnCityAverages() {
-        City city = new City("Liberec", new State("Česko"));
-        city.setId(1L);
+        City city = new City(1L,"Liberec", new State("Česko"));
 
         when(cityRepository.findById(1L)).thenReturn(Optional.of(city));
         when(measurementRepository.findByCityIdAndTimestampAfter(eq(1L), any(LocalDateTime.class)))
@@ -58,13 +57,9 @@ class MeasurementStatsServiceTest {
 
     @Test
     void shouldReturnStateAverages() {
-        State state = new State("Česko");
-        state.setId(2L);
-
-        City city1 = new City("Liberec", state);
-        city1.setId(3L);
-        City city2 = new City("Brno", state);
-        city2.setId(4L);
+        State state = new State("Česko", 2L);
+        City city1 = new City(3L,"Liberec", state);
+        City city2 = new City(4L,"Brno", state);
 
         state.setCities(List.of(city1, city2));
 

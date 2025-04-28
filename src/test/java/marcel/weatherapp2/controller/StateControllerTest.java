@@ -33,8 +33,7 @@ class StateControllerTest {
 
     @Test
     void shouldReturnStateById() throws Exception {
-        State state = new State("Česko");
-        state.setId(1L);
+        State state = new State("Česko", 1L);
         when(stateService.findById(1L)).thenReturn(state);
 
         mockMvc.perform(get("/api/state/1")).andExpect(status().isOk()).andExpect(jsonPath("$.id").value(1)).andExpect(jsonPath("$.name").value("Česko"));
@@ -42,10 +41,8 @@ class StateControllerTest {
 
     @Test
     void shouldReturnAllStates() throws Exception {
-        State s1 = new State("Česko");
-        s1.setId(1L);
-        State s2 = new State("Slovensko");
-        s2.setId(2L);
+        State s1 = new State("Česko", 1L);
+        State s2 = new State("Slovensko", 2L);
 
         when(stateService.findAll()).thenReturn(List.of(s1, s2));
 
@@ -54,9 +51,7 @@ class StateControllerTest {
 
     @Test
     void shouldCreateState() throws Exception {
-        State created = new State("Slovensko");
-        created.setId(2L);
-
+        State created = new State("Slovensko", 2L);
         when(stateService.save(any(StateCreateDto.class))).thenReturn(created);
 
         mockMvc.perform(post("/api/state").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(new StateCreateDto("Slovensko")))).andExpect(status().isOk()).andExpect(jsonPath("$.id").value(2)).andExpect(jsonPath("$.name").value("Slovensko"));
@@ -64,8 +59,7 @@ class StateControllerTest {
 
     @Test
     void shouldUpdateState() throws Exception {
-        State updated = new State("Německo");
-        updated.setId(1L);
+        State updated = new State("Německo", 1L);
 
         when(stateService.update(eq(1L), any(StateCreateDto.class))).thenReturn(updated);
 

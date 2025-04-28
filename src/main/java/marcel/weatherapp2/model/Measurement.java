@@ -27,6 +27,14 @@ public class Measurement {
         this.timestamp = timestamp;
         this.city = city;
     }
+
+    public Measurement(Long id, double temperature, double humidity, LocalDateTime timestamp, City city) {
+        this.id = id;
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.timestamp = timestamp;
+        this.city = city;
+    }
 }
 
 

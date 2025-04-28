@@ -35,11 +35,9 @@ class MeasurementControllerTest {
 
     @Test
     void shouldGetCurrentMeasurement() throws Exception {
-        City city = new City("Liberec", new State("Česko"));
-        city.setId(1L);
+        City city = new City(1L,"Liberec", new State("Česko"));
 
-        Measurement measurement = new Measurement(18.5, 65.0, LocalDateTime.now(), city);
-        measurement.setId(1L);
+        Measurement measurement = new Measurement(1L,18.5, 65.0, LocalDateTime.now(), city);
 
         when(measurementService.getMeasurement(1L)).thenReturn(measurement);
 
@@ -53,12 +51,10 @@ class MeasurementControllerTest {
 
     @Test
     void shouldGetMeasurementsInRange() throws Exception {
-        City city = new City("Brno", new State("CZ"));
-        city.setId(2L);
-        Measurement m1 = new Measurement(20.0, 70.0, LocalDateTime.now(), city);
-        m1.setId(1L);
-        Measurement m2 = new Measurement(22.0, 60.0, LocalDateTime.now(), city);
-        m2.setId(2L);
+        City city = new City(2L,"Brno", new State("CZ"));
+        Measurement m1 = new Measurement(1L,20.0, 70.0, LocalDateTime.now(), city);
+
+        Measurement m2 = new Measurement(2L,22.0, 60.0, LocalDateTime.now(), city);
 
         when(measurementService.getMeasurements(eq(2L), any(), any())).thenReturn(List.of(m1, m2));
 
@@ -72,10 +68,8 @@ class MeasurementControllerTest {
 
     @Test
     void shouldGetAllMeasurements() throws Exception {
-        City city = new City("Plzeň", new State("CZ"));
-        city.setId(3L);
-        Measurement m = new Measurement(15.5, 55.5, LocalDateTime.now(), city);
-        m.setId(5L);
+        City city = new City(3L,"Plzeň", new State("CZ"));
+        Measurement m = new Measurement(5L,15.5, 55.5, LocalDateTime.now(), city);
 
         when(measurementService.getAllMeasurements()).thenReturn(List.of(m));
 
@@ -87,10 +81,8 @@ class MeasurementControllerTest {
 
     @Test
     void shouldUpdateMeasurement() throws Exception {
-        City city = new City("Praha", new State("CZ"));
-        city.setId(4L);
-        Measurement updated = new Measurement(16.0, 50.0, LocalDateTime.now(), city);
-        updated.setId(99L);
+        City city = new City(4L,"Praha", new State("CZ"));
+        Measurement updated = new Measurement(99L,16.0, 50.0, LocalDateTime.now(), city);
 
         when(measurementService.updateMeasurement(eq(99L), any(MeasurementDto.class))).thenReturn(updated);
 

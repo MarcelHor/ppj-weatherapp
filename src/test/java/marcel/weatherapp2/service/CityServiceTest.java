@@ -38,8 +38,7 @@ class CityServiceTest {
     @Test
     void shouldFindCityById() {
         State state = new State("Česko", 1L);
-        City city = new City("Liberec", state);
-        city.setId(1L);
+        City city = new City(1L,"Liberec", state);
 
         when(cityRepository.findById(1L)).thenReturn(Optional.of(city));
 
@@ -61,8 +60,7 @@ class CityServiceTest {
         State state = new State("Slovensko", 2L);
         when(stateRepository.findById(2L)).thenReturn(Optional.of(state));
 
-        City city = new City("Bratislava", state);
-        city.setId(2L);
+        City city = new City(2L,"Bratislava", state);
 
         when(cityRepository.save(any(City.class))).thenReturn(city);
 
@@ -79,8 +77,7 @@ class CityServiceTest {
         State oldState = new State("Česko", 1L);
         State newState = new State("Slovensko", 2L);
 
-        City city = new City("Olomouc", oldState);
-        city.setId(5L);
+        City city = new City(5L,"Olomouc", oldState);
 
         when(cityRepository.findById(5L)).thenReturn(Optional.of(city));
         when(stateRepository.findById(2L)).thenReturn(Optional.of(newState));
