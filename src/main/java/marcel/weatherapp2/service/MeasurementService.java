@@ -11,10 +11,13 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 @Service
@@ -67,5 +70,24 @@ public class MeasurementService {
         existingMeasurement.setHumidity(measurement.humidity());
         existingMeasurement.setTimestamp(measurement.timestamp());
         return repository.save(existingMeasurement);
+    }
+
+    @Transactional
+    public void generateTestData(Long cityId, int count) {
+        City city = cityRepository.findById(cityId)
+                .orElseThrow(() -> new IllegalArgumentException("City not found"));
+
+        List<Measurement> list = new ArrayList<>(count);
+        LocalDateTime now = LocalDateTime.now();
+
+        for (int i = 0; i < count; i++) {
+            double temp = ThreadLocalRandom.current().nextDouble(-10, 40);
+            double humidity = ThreadLocalRandom.current().nextDouble(30, 90);
+            LocalDateTime timestamp = now.minusHours(i);
+
+            list.add(new Measurement(temp, humidity, timestamp, city));
+        }
+
+        repository.saveAll(list);
     }
 }

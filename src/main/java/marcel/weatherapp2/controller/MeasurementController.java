@@ -5,6 +5,7 @@ import marcel.weatherapp2.dto.MeasurementDto;
 import marcel.weatherapp2.model.Measurement;
 import marcel.weatherapp2.service.MeasurementService;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -51,5 +52,11 @@ public class MeasurementController {
     @DeleteMapping("/{id}")
     public void deleteMeasurement(@PathVariable Long id) {
         service.deleteMeasurement(id);
+    }
+
+    @PostMapping("/test")
+    public ResponseEntity<Void> generateTestData(@RequestParam Long cityId, @RequestParam int count) {
+        service.generateTestData(cityId, count);
+        return ResponseEntity.ok().build();
     }
 }
