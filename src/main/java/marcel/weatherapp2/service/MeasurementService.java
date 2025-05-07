@@ -2,6 +2,7 @@ package marcel.weatherapp2.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import marcel.weatherapp2.dto.CityAverageDto;
 import marcel.weatherapp2.dto.MeasurementDto;
 import marcel.weatherapp2.model.City;
 import marcel.weatherapp2.model.Measurement;
@@ -89,5 +90,21 @@ public class MeasurementService {
         }
 
         repository.saveAll(list);
+    }
+
+    public CityAverageDto getCityAverages(Long cityId) {
+        City city = cityRepository.findById(cityId)
+                .orElseThrow(() -> new IllegalArgumentException("City not found"));
+
+        return new CityAverageDto(
+                city.getId(),
+                city.getName(),
+                repository.getAverageTemperatureByCitySince(cityId, LocalDateTime.now().minusDays(1)),
+                repository.getAverageTemperatureByCitySince(cityId, LocalDateTime.now().minusDays(7)),
+                repository.getAverageTemperatureByCitySince(cityId, LocalDateTime.now().minusDays(14)),
+                repository.getAverageHumidityByCitySince(cityId, LocalDateTime.now().minusDays(1)),
+                repository.getAverageHumidityByCitySince(cityId, LocalDateTime.now().minusDays(7)),
+                repository.getAverageHumidityByCitySince(cityId, LocalDateTime.now().minusDays(14))
+        );
     }
 }

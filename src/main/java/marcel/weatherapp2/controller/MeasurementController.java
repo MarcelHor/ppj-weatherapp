@@ -1,6 +1,7 @@
 package marcel.weatherapp2.controller;
 
 import lombok.RequiredArgsConstructor;
+import marcel.weatherapp2.dto.CityAverageDto;
 import marcel.weatherapp2.dto.MeasurementDto;
 import marcel.weatherapp2.model.Measurement;
 import marcel.weatherapp2.service.MeasurementService;
@@ -58,5 +59,10 @@ public class MeasurementController {
     public ResponseEntity<Void> generateTestData(@RequestParam Long cityId, @RequestParam int count) {
         service.generateTestData(cityId, count);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/city/{id}/avg")
+    public CityAverageDto getCityAvg(@PathVariable Long id) {
+        return service.getCityAverages(id);
     }
 }
