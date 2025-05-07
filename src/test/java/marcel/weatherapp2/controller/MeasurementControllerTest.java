@@ -1,6 +1,7 @@
 package marcel.weatherapp2.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import marcel.weatherapp2.dto.CityAverageDto;
 import marcel.weatherapp2.dto.MeasurementDto;
 import marcel.weatherapp2.model.City;
 import marcel.weatherapp2.model.Measurement;
@@ -102,4 +103,27 @@ class MeasurementControllerTest {
         mockMvc.perform(delete("/api/measurement/55"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void shouldReturnCityAverages() throws Exception {
+        CityAverageDto dto = new CityAverageDto(
+                1L, "Liberec",
+                10.0, 9.0, 8.0,
+                70.0, 65.0, 60.0
+        );
+
+        when(measurementService.getCityAverages(1L)).thenReturn(dto);
+
+        mockMvc.perform(get("/api/measurement/city/1/avg"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.cityId").value(1))
+                .andExpect(jsonPath("$.cityName").value("Liberec"))
+                .andExpect(jsonPath("$.averageTempDay").value(10.0))
+                .andExpect(jsonPath("$.averageTempWeek").value(9.0))
+                .andExpect(jsonPath("$.averageTempTwoWeeks").value(8.0))
+                .andExpect(jsonPath("$.averageHumidityDay").value(70.0))
+                .andExpect(jsonPath("$.averageHumidityWeek").value(65.0))
+                .andExpect(jsonPath("$.averageHumidityTwoWeeks").value(60.0));
+    }
+
 }

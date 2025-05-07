@@ -1,5 +1,6 @@
 package marcel.weatherapp2.service;
 
+import marcel.weatherapp2.dto.CityAverageDto;
 import marcel.weatherapp2.dto.MeasurementDto;
 import marcel.weatherapp2.model.City;
 import marcel.weatherapp2.model.Measurement;
@@ -113,4 +114,27 @@ class MeasurementServiceTest {
         assertEquals(22.5, updated.getTemperature());
         assertEquals(55.0, updated.getHumidity());
     }
+
+    @Test
+    void shouldReturnCityAverages() {
+        City city = new City(1L, "Liberec", new State("Česko"));
+        when(cityRepository.findById(1L)).thenReturn(Optional.of(city));
+
+        when(measurementRepository.getAverageTemperatureByCitySince(eq(1L), any()))
+                .thenReturn(10.0);
+        when(measurementRepository.getAverageHumidityByCitySince(eq(1L), any()))
+                .thenReturn(70.0);
+
+        CityAverageDto result = measurementService.getCityAverages(1L);
+
+        assertEquals(1L, result.cityId());
+        assertEquals("Liberec", result.cityName());
+        assertEquals(10.0, result.averageTempDay());
+        assertEquals(10.0, result.averageTempWeek());
+        assertEquals(10.0, result.averageTempTwoWeeks());
+        assertEquals(70.0, result.averageHumidityDay());
+        assertEquals(70.0, result.averageHumidityWeek());
+        assertEquals(70.0, result.averageHumidityTwoWeeks());
+    }
+
 }
